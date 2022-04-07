@@ -21,13 +21,13 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LoginEmailField(
+            const LoginEmailField(
               errorText: 'error',
             ),
-            LoginPasswordField(
+            const LoginPasswordField(
               errorText: 'error',
             ),
-            LoginButton(
+            const LoginButton(
               child: Text('login'),
             ),
             GestureDetector(
@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => const RegisterPage()),
               ),
-              child: Text('go to register'),
+              child: const Text('go to register'),
             ),
           ],
         ),

@@ -20,7 +20,7 @@ class RegisterPage extends StatelessWidget {
         onSuccess: () => Navigator.pop(context),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             RegisterEmailField(
               errorText: 'error',
             ),

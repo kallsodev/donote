@@ -21,10 +21,10 @@ class InitLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EasyAuthInit(
+    return const EasyAuthInit(
       child: EasyMaterialApp(
         home: EasyAuthLayer(
-          unknown: const CircularProgressIndicator(),
+          unknown: CircularProgressIndicator(),
           unauthenticated: LoginPage(),
           authenticated: HomePage(),
         ),
