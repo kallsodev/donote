@@ -1,4 +1,4 @@
-import 'package:donote/custom_theme.dart';
+import 'package:donote/resources/custom_theme.dart';
 import 'package:donote/pages/home/home_page.dart';
 import 'package:donote/pages/login/login_page.dart';
 import 'package:easy_auth/easy_auth.dart';

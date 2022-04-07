@@ -1,3 +1,4 @@
+import 'package:donote/resources/colors.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class CustomTheme implements AppThemes {
 
   static final _darkTheme = _lightTheme.copyWith(
     brightness: Brightness.dark,
+    primaryColor: AppColors.primaryColor,
   );
 
   @override
