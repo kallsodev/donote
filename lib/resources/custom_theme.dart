@@ -30,14 +30,14 @@ class CustomTheme implements AppThemes {
           OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
     ),
-    textTheme: TextTheme(
-      subtitle1: const TextStyle(color: AppColors.secondaryColor, fontSize: 14),
-      subtitle2: const TextStyle(
+    textTheme: const TextTheme(
+      subtitle1: TextStyle(color: AppColors.secondaryColor, fontSize: 14),
+      subtitle2: TextStyle(
         color: AppColors.tertiaryColor,
         fontSize: 14,
       ),
-      button: const TextStyle(color: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w700),
-      titleLarge: const TextStyle(color: AppColors.secondaryColor, fontWeight: FontWeight.w600),
+      button: TextStyle(color: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w700),
+      headline1: TextStyle(color: AppColors.secondaryColor, fontWeight: FontWeight.w600),
     ),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: AppColors.secondaryColor),
   );

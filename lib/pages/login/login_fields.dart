@@ -15,7 +15,7 @@ class LoginFields extends StatelessWidget {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              content: Text(error),
+              content: Text(error, style: TextStyle(color: Colors.white),),
             ),
           );
       },

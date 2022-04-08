@@ -1,6 +1,7 @@
 import 'package:donote/pages/login/login_fields.dart';
 import 'package:donote/pages/login/wave_container.dart';
 import 'package:donote/pages/register/register_page.dart';
+import 'package:donote/resources/strings.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.65,
                       child: FittedBox(
                         child: Text(
-                          "donotes",
+                          Strings.title,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
