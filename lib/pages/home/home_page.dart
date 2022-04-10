@@ -1,3 +1,4 @@
+import 'package:easy_auth/easy_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,7 +9,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          children: [
+          children: const [
+            LogoutButton(
+              child: Text('Log out'),
+            ),
           ],
         ),
       ),

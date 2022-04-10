@@ -258,7 +258,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: d5b5d069188c00e8c70e15fd3ff075e9d448325d
+      resolved-ref: "480cbde49bf486a93f3eaa24e06f60b54c4bd803"
       url: "https://github.com/kallsodev/easy_auth.git"
     source: git
     version: "1.0.0"
@@ -267,7 +267,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "19c428eba0cba42a41314fde954f5433d5e4fb66"
+      resolved-ref: "011ea3ecf554d71ee7541a3c4f34e8ef995d00f9"
       url: "https://github.com/kallsodev/easy_utils.git"
     source: git
     version: "0.0.1"
