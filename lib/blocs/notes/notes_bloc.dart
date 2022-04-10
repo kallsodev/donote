@@ -2,37 +2,40 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donote/models/note_model.dart';
 import 'package:donote/repositories/notes_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 part 'notes_event.dart';
 
 part 'notes_state.dart';
 
-class ProfilePostsBloc extends Bloc<ProfilePostsEvent, ProfilePostsState> {
+@injectable
+class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final NotesRepository notesRepository;
 
-  ProfilePostsBloc(this.notesRepository) : super(const ProfilePostsState.loading()) {
-    on<LoadProfilePosts>(_onLoadProfilePosts);
+  NotesBloc(this.notesRepository) : super(const NotesState.loading()) {
+    on<LoadNotes>(_onLoadNotes);
   }
 
-  Future<void> _onLoadProfilePosts(LoadProfilePosts event, Emitter<ProfilePostsState> emit) async {
-    var userId = FirebaseAuth.instance.currentUser!.uid;
-    // await emit.forEach<QuerySnapshot<Map<String, dynamic>>>(
-    //   notesRepository.getProfilePosts(event.profileId),
-    //   onData: (query) =>
-    //       ProfilePostsState.loaded(
-    //           query.docs.map((event) {
-    //             PostModel p = PostModel.fromDocumentSnapshot(event);
-    //             return p;
-    //           }).toList(), isSuperfan: isSuperfan
-    //       ),
-    //   onError: (e, __) {
-    //     print(e);
-    //     return ProfilePostsState.failed();
-    //   },
-    // );
+  Future<void> _onLoadNotes(LoadNotes event, Emitter<NotesState> emit) async {
+    await emit.forEach<QuerySnapshot<Map<String, dynamic>>>(
+      notesRepository.getNotes(),
+      onData: (query) =>
+          NotesState.loaded(
+              query.docs.map((event) {
+                NoteModel p = NoteModel.fromDocumentSnapshot(event);
+                return p;
+              }).toList(),
+          ),
+      onError: (e, __) {
+        if(kDebugMode) {
+          print(e);
+        }
+        return const NotesState.failed();
+      },
+    );
   }
 }

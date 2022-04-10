@@ -40,9 +40,12 @@ class RegisterPage extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) => Stack(
                     children: [
-                      SizedBox(
-                        height: constraints.maxHeight,
-                        child: WaveContainer(maxWidth: MediaQuery.of(context).size.width),
+                      Hero(
+                        tag: 'waves',
+                        child: SizedBox(
+                          height: constraints.maxHeight,
+                          child: WaveContainer(maxWidth: MediaQuery.of(context).size.width),
+                        ),
                       ),
                       const RegisterFields(),
                     ],
