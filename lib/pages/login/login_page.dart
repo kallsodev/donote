@@ -1,5 +1,5 @@
 import 'package:donote/pages/login/login_fields.dart';
-import 'package:donote/pages/login/wave_container.dart';
+import 'package:donote/widgets/wave_container.dart';
 import 'package:donote/pages/register/register_page.dart';
 import 'package:donote/resources/strings.dart';
 import 'package:easy_auth/easy_auth.dart';
@@ -25,10 +25,13 @@ class LoginPage extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.65,
-                      child: FittedBox(
-                        child: Text(
-                          Strings.title,
-                          style: Theme.of(context).textTheme.titleLarge,
+                      child: Hero(
+                        tag: Strings.title,
+                        child: FittedBox(
+                          child: Text(
+                            Strings.title,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
                         ),
                       ),
                     ),

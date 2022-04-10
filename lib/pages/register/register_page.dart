@@ -1,4 +1,7 @@
-import 'package:easy_auth/easy_auth.dart';
+import 'package:donote/pages/register/register_fields.dart';
+import 'package:donote/widgets/wave_container.dart';
+import 'package:donote/resources/strings.dart';
+import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -7,33 +10,47 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: EasyAuthRegisterProvider(
-        onFailure: (error) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(error),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              HSpace(MediaQuery.of(context).size.height * 0.15),
+              Padding(
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      child: Hero(
+                        tag: Strings.title,
+                        child: FittedBox(
+                          child: Text(
+                            Strings.title,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-        },
-        onSuccess: () => Navigator.pop(context),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            RegisterEmailField(
-              errorText: 'error',
-            ),
-            RegisterPasswordField(
-              errorText: 'error',
-            ),
-            RegisterConfirmPasswordField(
-              errorText: 'error',
-            ),
-            RegisterButton(
-              child: Text('register'),
-            ),
-          ],
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Stack(
+                    children: [
+                      SizedBox(
+                        height: constraints.maxHeight,
+                        child: WaveContainer(maxWidth: MediaQuery.of(context).size.width),
+                      ),
+                      const RegisterFields(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

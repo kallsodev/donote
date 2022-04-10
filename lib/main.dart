@@ -1,5 +1,5 @@
-import 'package:donote/resources/custom_theme.dart';
 import 'package:donote/pages/home/home_page.dart';
+import 'package:donote/resources/custom_theme.dart';
 import 'package:donote/pages/login/login_page.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
@@ -11,7 +11,7 @@ Future<void> main() async {
       WidgetsFlutterBinding.ensureInitialized();
       await EasyAuth.initializeFirebase();
     },
-    appThemes: CustomTheme(),
+    appThemes: const CustomTheme(),
     child: const InitLayer(),
   );
 }
@@ -24,7 +24,7 @@ class InitLayer extends StatelessWidget {
     return const EasyAuthInit(
       child: EasyMaterialApp(
         home: EasyAuthLayer(
-          unknown: CircularProgressIndicator(),
+          unknown: Scaffold(body: Center(child: CircularProgressIndicator(),),),
           unauthenticated: LoginPage(),
           authenticated: HomePage(),
         ),

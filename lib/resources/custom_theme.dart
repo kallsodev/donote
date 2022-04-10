@@ -1,15 +1,19 @@
 import 'package:donote/resources/colors.dart';
+import 'package:donote/resources/strings.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomTheme implements AppThemes {
+
+  const CustomTheme();
+
   static final _lightTheme = ThemeData(
     brightness: Brightness.light,
   );
 
   static final _darkTheme = ThemeData(
     brightness: Brightness.dark,
-    fontFamily: 'Poppins',
+    fontFamily: Strings.fontFamily,
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: AppColors.primaryColor,
       brightness: Brightness.dark,
