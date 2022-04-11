@@ -1,4 +1,5 @@
 import 'package:donote/blocs/notes/notes_bloc.dart';
+import 'package:donote/pages/note/note_before.dart';
 import 'package:donote/pages/note/note_page.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +20,23 @@ class NotesList extends StatelessWidget {
           case NotesStatus.loaded:
             return ListView(
               children: state.notes
-                  .map((e) => Padding(
+                  .map((e) => SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
+                    child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  onTap: () {
-                    EasyUtils.push(context, NotePage(note: e));
-                  },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.title),
+                    onTap: () {
+                      EasyUtils.push(context, NoteBefore(note: e));
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(e.title),
+                      ),
                     ),
-                  ),
                 ),
-              ))
+              ),
+                  ))
                   .toList(),
             );
           case NotesStatus.failed:

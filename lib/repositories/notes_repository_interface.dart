@@ -5,9 +5,9 @@ import 'package:donote/models/update_note_model.dart';
 abstract class INotesRepository {
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotes();
 
-  Future<void> addNote({required AddNoteModel addNoteModel});
+  Future<DocumentReference> addNote({required AddNoteModel addNoteModel});
 
-  Future<void> updateNote({required UpdateNoteModel updateNoteModel});
+  Future<void> updateNote({required UpdateNoteModel updateNoteModel, required DocumentReference documentReference});
 
   Future<void> deleteNote({required DocumentReference documentReference});
 

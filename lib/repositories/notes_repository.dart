@@ -9,8 +9,8 @@ import 'package:injectable/injectable.dart';
 @singleton
 class NotesRepository implements INotesRepository {
   @override
-  Future<void> addNote({required AddNoteModel addNoteModel}) async {
-    await FirebaseFirestore.instance
+  Future<DocumentReference> addNote({required AddNoteModel addNoteModel}) async {
+    return await FirebaseFirestore.instance
         .collection('users')
         .doc(EasyAuth.currentUserId)
         .collection('notes')
@@ -23,8 +23,8 @@ class NotesRepository implements INotesRepository {
   }
 
   @override
-  Future<void> updateNote({required UpdateNoteModel updateNoteModel}) async {
-    await updateNoteModel.documentReference.update(updateNoteModel.toJson());
+  Future<void> updateNote({required UpdateNoteModel updateNoteModel, required DocumentReference documentReference}) async {
+    await documentReference.update(updateNoteModel.toJson());
   }
 
   @override

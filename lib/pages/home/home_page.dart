@@ -1,6 +1,7 @@
 import 'package:donote/blocs/notes/notes_bloc.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/pages/home/notes_list.dart';
+import 'package:donote/pages/note/note_before.dart';
 import 'package:donote/pages/note/note_page.dart';
 import 'package:donote/repositories/notes_repository.dart';
 import 'package:easy_auth/easy_auth.dart';
@@ -15,6 +16,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProviderPage(
         bloc: NotesBloc(getIt<NotesRepository>())..add(const LoadNotes()),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            EasyUtils.push(context, const NoteBefore());
+          },
+          child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
+        ),
         child: SafeArea(
           child: Column(
             children: const [

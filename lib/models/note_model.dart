@@ -19,7 +19,7 @@ class NoteModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [documentReference.id];
+  List<Object?> get props => [documentReference.id, title, data, lastModifiedAt];
 
   static fromDocumentSnapshot(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
