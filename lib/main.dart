@@ -1,3 +1,4 @@
+import 'package:donote/injection.dart';
 import 'package:donote/pages/home/home_page.dart';
 import 'package:donote/resources/custom_theme.dart';
 import 'package:donote/pages/login/login_page.dart';
@@ -9,6 +10,7 @@ Future<void> main() async {
   EasyUtils.init(
     extraCalls: () async {
       WidgetsFlutterBinding.ensureInitialized();
+      configureDependencies();
       await EasyAuth.initializeFirebase();
     },
     appThemes: const CustomTheme(),

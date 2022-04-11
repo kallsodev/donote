@@ -1,29 +1,31 @@
 part of 'notes_bloc.dart';
 
-enum ProfilePostsStatus { loading, loaded, failed }
+enum NotesStatus { loading, loaded, failed }
 
-class ProfilePostsState extends Equatable {
-  const ProfilePostsState._({
+class NotesState extends Equatable {
+  const NotesState._({
     required this.status,
     this.error = "",
+    this.notes = const []
   });
 
-  const ProfilePostsState.loaded()
-      : this._(status: ProfilePostsStatus.loaded);
+  const NotesState.loaded(List<NoteModel> notes)
+      : this._(status: NotesStatus.loaded, notes: notes);
 
-  const ProfilePostsState.loading() : this._(status: ProfilePostsStatus.loading);
+  const NotesState.loading() : this._(status: NotesStatus.loading);
 
-  const ProfilePostsState.failed()
-      : this._(status: ProfilePostsStatus.failed, error: "Failed to load profile");
+  const NotesState.failed()
+      : this._(status: NotesStatus.failed, error: "Failed to load notes");
 
-  final ProfilePostsStatus status;
+  final NotesStatus status;
+  final List<NoteModel> notes;
   final String error;
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [status, notes];
 
   @override
   String toString() {
-    return "ProfilePostsState $status]";
+    return "NotesState $status";
   }
 }

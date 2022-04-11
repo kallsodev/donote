@@ -21,6 +21,7 @@ class CustomTheme implements AppThemes {
       tertiary: AppColors.tertiaryColor,
     ),
     hintColor: AppColors.hintColor,
+    scaffoldBackgroundColor: AppColors.primaryColor,
     inputDecorationTheme: InputDecorationTheme(
       errorStyle: const TextStyle(
         color: AppColors.errorColor,

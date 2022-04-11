@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:donote/models/note_model.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
 class NotePage extends StatefulWidget {
-  final String? json;
-  const NotePage({Key? key, this.json}) : super(key: key);
+  final NoteModel? note;
+  const NotePage({Key? key, this.note}) : super(key: key);
 
   @override
   State<NotePage> createState() => _NotePageState();
@@ -17,8 +18,8 @@ class _NotePageState extends State<NotePage> {
 
   @override
   void initState() {
-    if(widget.json != null) {
-      var data = jsonDecode(widget.json!);
+    if(widget.note != null) {
+      var data = jsonDecode(widget.note!.data);
       _controller = quill.QuillController(document: quill.Document.fromJson(data), selection: TextSelection.collapsed(offset: 0));
     } else {
       _controller = quill.QuillController.basic();
