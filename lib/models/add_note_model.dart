@@ -5,7 +5,7 @@ class AddNoteModel {
   final String data;
   final bool hidden;
 
-  AddNoteModel(
+  const AddNoteModel(
       {required this.title, required this.data, required this.hidden});
 
   Map<String, dynamic> toJson() => {

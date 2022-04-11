@@ -1,3 +1,4 @@
+import 'package:donote/pages/forgotten_password/forgotten_password_form.dart';
 import 'package:donote/pages/login/login_fields.dart';
 import 'package:donote/widgets/wave_container.dart';
 import 'package:donote/pages/register/register_page.dart';
@@ -6,8 +7,8 @@ import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class ForgottenPasswordPage extends StatelessWidget {
+  const ForgottenPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +43,11 @@ class LoginPage extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) => Stack(
                     children: [
-                      Hero(
-                        tag: 'waves',
-                        child: SizedBox(
-                          height: constraints.maxHeight,
-                          child: WaveContainer(maxWidth: MediaQuery.of(context).size.width),
-                        ),
+                      SizedBox(
+                        height: constraints.maxHeight,
+                        child: WaveContainer(maxWidth: MediaQuery.of(context).size.width),
                       ),
-                      const LoginFields(),
+                      const ForgottenPasswordForm(),
                     ],
                   ),
                 ),

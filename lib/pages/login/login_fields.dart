@@ -1,10 +1,10 @@
+import 'package:donote/pages/forgotten_password/forgotten_password_page.dart';
 import 'package:donote/pages/register/register_page.dart';
 import 'package:donote/resources/strings.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 class LoginFields extends StatelessWidget {
   const LoginFields({Key? key}) : super(key: key);
@@ -17,7 +17,10 @@ class LoginFields extends StatelessWidget {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              content: Text(error, style: const TextStyle(color: Colors.white),),
+              content: Text(
+                error,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           );
       },
@@ -65,6 +68,16 @@ class LoginFields extends StatelessWidget {
                   },
                   child: Text(
                     "Don't have an account? Register",
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                ),
+                HSpace(MediaQuery.of(context).size.height * 0.02),
+                GestureDetector(
+                  onTap: () {
+                    EasyUtils.push(context, const ForgottenPasswordPage());
+                  },
+                  child: Text(
+                    "Forgot your password?",
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ),

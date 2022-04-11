@@ -1,14 +1,13 @@
 part of 'notes_bloc.dart';
 
-abstract class ProfilePostsEvent extends Equatable {
-  const ProfilePostsEvent();
+abstract class NotesEvent extends Equatable {
+  const NotesEvent();
 }
 
-class LoadProfilePosts extends ProfilePostsEvent {
-  final String profileId;
+class LoadNotes extends NotesEvent {
 
-  const LoadProfilePosts(this.profileId);
+  const LoadNotes();
 
   @override
-  List<Object?> get props => [profileId];
+  List<Object?> get props => ['load'];
 }
