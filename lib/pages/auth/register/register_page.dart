@@ -1,4 +1,4 @@
-import 'package:donote/pages/register/register_fields.dart';
+import 'package:donote/pages/auth/register/register_fields.dart';
 import 'package:donote/widgets/wave_container.dart';
 import 'package:donote/resources/strings.dart';
 import 'package:easy_utils/easy_utils.dart';

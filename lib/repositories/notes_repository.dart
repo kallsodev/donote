@@ -29,6 +29,6 @@ class NotesRepository implements INotesRepository {
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotes() {
-    return FirebaseFirestore.instance.collection('users').doc(EasyAuth.currentUserId).collection('notes').snapshots();
+    return FirebaseFirestore.instance.collection('users').doc(EasyAuth.currentUserId).collection('notes').orderBy('lastModifiedAt', descending: true).snapshots();
   }
 }

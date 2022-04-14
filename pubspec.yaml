@@ -27,6 +27,8 @@ dependencies:
   injectable: ^1.5.3
   get_it: ^7.2.0
   equatable: ^2.0.3
+  timeago: ^3.2.2
+  flutter_colorpicker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

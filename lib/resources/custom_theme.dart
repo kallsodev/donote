@@ -20,6 +20,11 @@ class CustomTheme implements AppThemes {
       secondary: AppColors.secondaryColor,
       tertiary: AppColors.tertiaryColor,
     ),
+    cardColor: AppColors.tertiaryColor,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.primaryColor,
+      elevation: 0
+    ),
     hintColor: AppColors.hintColor,
     scaffoldBackgroundColor: AppColors.primaryColor,
     inputDecorationTheme: InputDecorationTheme(
@@ -36,13 +41,17 @@ class CustomTheme implements AppThemes {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
     ),
     textTheme: const TextTheme(
-      subtitle1: TextStyle(color: AppColors.secondaryColor, fontSize: 14),
+      caption: TextStyle(color: AppColors.hintColor, fontSize: 10),
+      subtitle1: TextStyle(color: AppColors.secondaryColor, fontSize: 12),
       subtitle2: TextStyle(
-        color: AppColors.tertiaryColor,
+        color: AppColors.primaryColor,
         fontSize: 14,
       ),
       button: TextStyle(color: AppColors.primaryColor, fontSize: 16, fontWeight: FontWeight.w700),
       headline1: TextStyle(color: AppColors.secondaryColor, fontWeight: FontWeight.w600),
+      headline2: TextStyle(color: AppColors.secondaryColor, fontWeight: FontWeight.w600, fontSize: 30),
+      headline3: TextStyle(color: AppColors.primaryColor, fontSize: 15),
+      headline4: TextStyle(color: AppColors.secondaryColor, fontSize: 14, fontWeight: FontWeight.w600, height: 1),
     ),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: AppColors.secondaryColor),
   );

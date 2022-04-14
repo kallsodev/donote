@@ -39,6 +39,8 @@ class NoteOperationsCubit extends Cubit<NoteOperationsState> {
           addNoteModel: AddNoteModel(
               title: updateNoteModel.title,
               data: updateNoteModel.data,
+              color: updateNoteModel.color,
+              stringData: updateNoteModel.stringData,
               hidden: updateNoteModel.hidden));
     } else {
       emit(state.copyWith(status: NoteOperationsStatus.loading));

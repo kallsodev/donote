@@ -1,5 +1,5 @@
-import 'package:donote/pages/forgotten_password/forgotten_password_page.dart';
-import 'package:donote/pages/register/register_page.dart';
+import 'package:donote/pages/auth/forgotten_password/forgotten_password_page.dart';
+import 'package:donote/pages/auth/register/register_page.dart';
 import 'package:donote/resources/strings.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
