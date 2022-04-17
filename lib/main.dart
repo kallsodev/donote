@@ -25,8 +25,13 @@ class InitLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return const EasyAuthInit(
       child: EasyMaterialApp(
+        debugShowCheckedModeBanner: false,
         home: EasyAuthLayer(
-          unknown: Scaffold(body: Center(child: CircularProgressIndicator(),),),
+          unknown: Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
           unauthenticated: LoginPage(),
           authenticated: HomePage(),
         ),

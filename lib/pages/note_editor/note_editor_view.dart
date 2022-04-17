@@ -31,7 +31,6 @@ class _NoteEditorViewState extends State<NoteEditorView> {
 
   @override
   void initState() {
-    noteColor = widget.note!.color;
     if (widget.note != null) {
       var data = jsonDecode(widget.note!.data);
       noteColor = widget.note!.color;
