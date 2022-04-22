@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:donote/blocs/add_note/note_operations_cubit.dart';
-import 'package:donote/injection.dart';
 import 'package:donote/models/note_model.dart';
 import 'package:donote/models/note_operation_model.dart';
 import 'package:donote/resources/colors.dart';
-import 'package:easy_auth/easy_auth.dart';
-import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -28,9 +24,6 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   bool hasChanged = false;
   Color? noteColor;
   Color pickerColor = AppColors.tertiaryColor;
-
-
-
 
   @override
   void initState() {
