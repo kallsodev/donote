@@ -12,11 +12,15 @@ class LocalNotesRepository {
     _notes = await Hive.openBox<LocalNoteModel>('notes');
   }
 
-  Future<void> putNote({required id, required LocalNoteModel note}) async {
+  void putNote({required id, required LocalNoteModel note}) {
     _notes.put(id, note);
   }
 
-  Future<void> deleteNote({required id, required LocalNoteModel note}) async {
+  void deleteNote({required id}){
     _notes.delete(id);
+  }
+
+  LocalNoteModel getNote({required id}){
+    return _notes.get(id)!;
   }
 }

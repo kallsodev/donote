@@ -1,28 +1,28 @@
-part of 'note_operations_cubit.dart';
+part of 'create_note_cubit.dart';
 
-enum NoteOperationsStatus { idle, loading, upToDate, failed }
+enum CreateNoteStatus { idle, loading, success, failed }
 
-class NoteOperationsState extends Equatable {
-  const NoteOperationsState({
+class CreateNoteState extends Equatable {
+  const CreateNoteState({
     this.errorMessage,
     this.documentReference,
     required this.status,
   });
 
   final String? errorMessage;
-  final NoteOperationsStatus status;
+  final CreateNoteStatus status;
   final DocumentReference? documentReference;
 
   @override
   List<Object> get props =>
       [status, documentReference != null ? documentReference!.id : '', errorMessage ?? ""];
 
-  NoteOperationsState copyWith({
-    required NoteOperationsStatus status,
+  CreateNoteState copyWith({
+    required CreateNoteStatus status,
     DocumentReference? documentReference,
     String? errorMessage,
   }) {
-    return NoteOperationsState(
+    return CreateNoteState(
       errorMessage: errorMessage ?? this.errorMessage,
       documentReference: documentReference ?? this.documentReference,
       status: status,

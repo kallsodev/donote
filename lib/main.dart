@@ -1,3 +1,4 @@
+import 'package:donote/blocs/note_sync/note_sync_cubit.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/pages/auth/login/login_page.dart';
 import 'package:donote/pages/home/home_page.dart';
@@ -6,6 +7,7 @@ import 'package:donote/resources/custom_theme.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
@@ -14,7 +16,7 @@ Future<void> main() async {
       WidgetsFlutterBinding.ensureInitialized();
       configureDependencies();
       await Hive.initFlutter();
-      getIt<LocalNotesRepository>().init();
+      await getIt<LocalNotesRepository>().init();
       await EasyAuth.initializeFirebase();
     },
     appThemes: const CustomTheme(),
@@ -27,17 +29,25 @@ class InitLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const EasyAuthInit(
-      child: EasyMaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: EasyAuthLayer(
-          unknown: Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+    return EasyAuthInit(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => getIt<NoteSyncCubit>(),
+            lazy: false,
           ),
-          unauthenticated: LoginPage(),
-          authenticated: HomePage(),
+        ],
+        child: const EasyMaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: EasyAuthLayer(
+            unknown: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            unauthenticated: LoginPage(),
+            authenticated: HomePage(),
+          ),
         ),
       ),
     );
