@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:donote/blocs/add_note/note_operations_cubit.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/models/note_model.dart';
-import 'package:donote/models/update_note_model.dart';
+import 'package:donote/models/note_operation_model.dart';
 import 'package:donote/resources/colors.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:easy_utils/easy_utils.dart';
@@ -28,6 +28,9 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   bool hasChanged = false;
   Color? noteColor;
   Color pickerColor = AppColors.tertiaryColor;
+
+
+
 
   @override
   void initState() {
@@ -61,7 +64,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
         return;
       } else {
         context.read<NoteOperationsCubit>().update(
-              updateNoteModel: UpdateNoteModel(
+              noteOperationModel: NoteOperationModel(
                   title: _titleController.text,
                   data: jsonEncode(_controller.document.toDelta().toJson()),
                   stringData: _controller.document.toPlainText(),

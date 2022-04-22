@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donote/models/add_note_model.dart';
 import 'package:donote/models/note_model.dart';
-import 'package:donote/models/update_note_model.dart';
+import 'package:donote/models/note_operation_model.dart';
 import 'package:donote/repositories/notes_repository_interface.dart';
 import 'package:easy_auth/easy_auth.dart';
 import 'package:injectable/injectable.dart';
@@ -9,12 +8,12 @@ import 'package:injectable/injectable.dart';
 @singleton
 class NotesRepository implements INotesRepository {
   @override
-  Future<DocumentReference> addNote({required AddNoteModel addNoteModel}) async {
+  Future<DocumentReference> createNote({required NoteOperationModel noteOperationModel}) async {
     return await FirebaseFirestore.instance
         .collection('users')
         .doc(EasyAuth.currentUserId)
         .collection('notes')
-        .add(addNoteModel.toJson());
+        .add(noteOperationModel.toCreateJson());
   }
 
   @override
@@ -23,8 +22,8 @@ class NotesRepository implements INotesRepository {
   }
 
   @override
-  Future<void> updateNote({required UpdateNoteModel updateNoteModel, required DocumentReference documentReference}) async {
-    await documentReference.update(updateNoteModel.toJson());
+  Future<void> updateNote({required NoteOperationModel noteOperationModel, required DocumentReference documentReference}) async {
+    await documentReference.update(noteOperationModel.toUpdateJson());
   }
 
   @override
