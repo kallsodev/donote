@@ -12,8 +12,16 @@ class NoteEditorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProviderPage(
-        bloc: getIt<NoteOperationsCubit>()..setNote(note), child: NoteEditorView(note: note,),
-    );
+    return note != null
+        ? BlocProviderPage(
+            bloc: getIt<NoteOperationsCubit>()..setNote(note),
+            child: NoteEditorView(
+              note: note,
+            ),
+          )
+        : BlocProviderPage(
+            bloc: getIt<NoteOperationsCubit>(),
+            child: const NoteEditorView(),
+          );
   }
 }
