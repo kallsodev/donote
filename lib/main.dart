@@ -1,3 +1,4 @@
+import 'package:donote/blocs/local_notes_sync/local_notes_sync_cubit.dart';
 import 'package:donote/blocs/note_sync/note_sync_cubit.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/pages/auth/login/login_page.dart';
@@ -37,16 +38,19 @@ class InitLayer extends StatelessWidget {
             lazy: false,
           ),
         ],
-        child: const EasyMaterialApp(
+        child: EasyMaterialApp(
           debugShowCheckedModeBanner: false,
           home: EasyAuthLayer(
-            unknown: Scaffold(
+            unknown: const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             ),
-            unauthenticated: LoginPage(),
-            authenticated: HomePage(),
+            unauthenticated: const LoginPage(),
+            authenticated: BlocProvider(
+              create: (context) => getIt<LocalNotesSyncCubit>()..syncLocalData(),
+              child: const HomePage(),
+            ),
           ),
         ),
       ),
