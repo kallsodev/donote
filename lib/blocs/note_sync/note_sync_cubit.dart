@@ -14,7 +14,7 @@ part 'note_sync_state.dart';
 @singleton
 class NoteSyncCubit extends Cubit<NoteSyncState> {
   NoteSyncCubit({required this.notesRepository, required this.localNotesRepository})
-      : super(const NoteSyncState(status: NoteSyncStatus.upToDate, toSyncDocuments: []));
+      : super(const NoteSyncState(status: NoteSyncStatus.upToDate, toSyncDocuments: {}));
 
   final NotesRepository notesRepository;
   final LocalNotesRepository localNotesRepository;
@@ -38,7 +38,7 @@ class NoteSyncCubit extends Cubit<NoteSyncState> {
     }
     emit(state.copyWith(
       status: NoteSyncStatus.upToDate,
-      toSyncDocuments: [],
+      toSyncDocuments: {},
     ));
   }
 
@@ -49,5 +49,22 @@ class NoteSyncCubit extends Cubit<NoteSyncState> {
     _timer?.cancel();
     _timer = Timer(const Duration(seconds: 5), _onSync);
     localNotesRepository.putNote(id: localNoteModel.docId, note: localNoteModel);
+  }
+
+  Future<void> forceSync({required LocalNoteModel localNoteModel}) async {
+    try {
+      await notesRepository.updateNote(localNoteModel: localNoteModel);
+      localNotesRepository.deleteNote(id: localNoteModel.docId);
+      Set<String> set = state.toSyncDocuments;
+      set.remove(localNoteModel.docId);
+      emit(state.copyWith(
+        status: state.status,
+        toSyncDocuments: set,
+      ));
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
   }
 }

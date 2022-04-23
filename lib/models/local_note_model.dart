@@ -15,7 +15,7 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
   @HiveField(2)
   final String data;
   @HiveField(3)
-  final Color? color;
+  final int? color;
   @HiveField(4)
   final String stringData;
   @HiveField(5)
@@ -36,7 +36,7 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
   Map<String, dynamic> toUpdateJson() => {
     'title': title,
     'data': data,
-    'color': color?.value,
+    'color': color,
     'stringData': stringData,
     'lastModifiedAt': Timestamp.fromDate(DateTime.now()),
     'hidden': hidden,
@@ -45,7 +45,7 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
   Map<String, dynamic> toCreateJson() => {
     'title': title,
     'data': data,
-    'color': color?.value,
+    'color': color,
     'stringData': stringData,
     'createdAt': Timestamp.fromDate(DateTime.now()),
     'lastModifiedAt': Timestamp.fromDate(DateTime.now()),

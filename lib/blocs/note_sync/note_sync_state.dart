@@ -12,7 +12,7 @@ class NoteSyncState extends Equatable {
   final String? errorMessage;
   final NoteSyncStatus status;
   final DocumentReference? documentReference;
-  final List<String> toSyncDocuments;
+  final Set<String> toSyncDocuments;
 
   @override
   List<Object> get props => [
@@ -25,16 +25,16 @@ class NoteSyncState extends Equatable {
   NoteSyncState copyWith({
     required NoteSyncStatus status,
     DocumentReference? documentReference,
-    List<String>? toSyncDocuments,
+    Set<String>? toSyncDocuments,
     String? errorMessage,
     String? changedDocument,
   }) {
     return NoteSyncState(
       errorMessage: errorMessage ?? this.errorMessage,
-      toSyncDocuments: [
+      toSyncDocuments: <String>{
         ...toSyncDocuments ?? this.toSyncDocuments,
         if (changedDocument != null) ...[changedDocument]
-      ],
+      },
       documentReference: documentReference ?? this.documentReference,
       status: status,
     );

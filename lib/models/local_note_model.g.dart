@@ -23,7 +23,7 @@ class LocalNoteModelAdapter extends TypeAdapter<LocalNoteModel> {
       stringData: fields[4] as String,
       hidden: fields[5] as bool,
       docId: fields[6] as String,
-      color: fields[3] as Color?,
+      color: fields[3] as int?,
     );
   }
 

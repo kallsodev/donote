@@ -1,6 +1,6 @@
 part of 'create_note_cubit.dart';
 
-enum CreateNoteStatus { idle, loading, success, failed }
+enum CreateNoteStatus { idle, syncing, success, failed }
 
 class CreateNoteState extends Equatable {
   const CreateNoteState({

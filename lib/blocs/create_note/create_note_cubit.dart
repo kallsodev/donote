@@ -34,4 +34,9 @@ class CreateNoteCubit extends Cubit<CreateNoteState> {
       }
     }
   }
+
+  Future<void> startSync() async {
+    await Future.delayed(const Duration(seconds: 1));
+    emit(state.copyWith(status: CreateNoteStatus.syncing));
+  }
 }

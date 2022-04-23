@@ -28,6 +28,8 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   Color? noteColor;
   Color pickerColor = AppColors.tertiaryColor;
   Timer? timer;
+  FocusNode focusNode = FocusNode();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -49,10 +51,10 @@ class _NoteEditorViewState extends State<NoteEditorView> {
       hasChanged = true;
     });
     super.initState();
+    context.read<CreateNoteCubit>().startSync();
   }
 
-  void updateNote(Timer timer, DocumentReference doc) {
-    print("update");
+  void updateNote(DocumentReference doc) {
     if (!hasChanged) {
       return;
     }
@@ -66,6 +68,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
               ),
               stringData: _controller.document.toPlainText(),
               hidden: false,
+              color: noteColor?.value,
               docId: doc.id));
       setState(() {
         hasChanged = false;
@@ -77,123 +80,142 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateNoteCubit, CreateNoteState>(
       listener: (context, currentNote) {
-        print(currentNote.status);
-        if (currentNote.status == CreateNoteStatus.success) {
-          print("status success");
+        if (currentNote.status == CreateNoteStatus.syncing) {
           timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-            updateNote(timer, currentNote.note!.documentReference);
+            updateNote(currentNote.note!.documentReference);
           });
         }
       },
       builder: (context, currentNote) {
-        return BlocBuilder<NoteSyncCubit, NoteSyncState>(
-          builder: (context, syncState) {
-            return SafeArea(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextField(
-                            controller: _titleController,
-                            onChanged: (title) {
-                              setState(() {
-                                hasChanged = true;
-                              });
-                            },
+        return WillPopScope(
+          onWillPop: () async {
+            context.read<NoteSyncCubit>().forceSync(
+                localNoteModel: LocalNoteModel(
+                    lastModifiedAt: DateTime.now(),
+                    title: _titleController.text,
+                    data: jsonEncode(
+                      _controller.document.toDelta().toJson(),
+                    ),
+                    stringData: _controller.document.toPlainText(),
+                    hidden: false,
+                    color: noteColor?.value,
+                    docId: currentNote.note!.documentReference.id));
+            return true;
+          },
+          child: BlocBuilder<NoteSyncCubit, NoteSyncState>(
+            builder: (context, syncState) {
+              return SafeArea(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: TextField(
+                              controller: _titleController,
+                              onChanged: (title) {
+                                setState(() {
+                                  hasChanged = true;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Pick a color!'),
-                                content: SingleChildScrollView(
-                                  child: BlockPicker(
-                                    pickerColor: pickerColor,
-                                    onColorChanged: (Color color) {
-                                      setState(() {
-                                        pickerColor = color;
-                                      });
-                                    },
-                                    availableColors: const [
-                                      AppColors.tertiaryColor,
-                                      Colors.red,
-                                      Colors.pink,
-                                      Colors.purple,
-                                      Colors.deepPurple,
-                                      Colors.indigo,
-                                      Colors.blue,
-                                      Colors.lightBlue,
-                                      Colors.cyan,
-                                      Colors.teal,
-                                      Colors.green,
-                                      Colors.lightGreen,
-                                      Colors.lime,
-                                      Colors.yellow,
-                                      Colors.amber,
-                                      Colors.orange,
-                                      Colors.deepOrange,
-                                      Colors.brown,
-                                      Colors.grey,
-                                      Colors.black,
-                                    ],
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Pick a color!'),
+                                  content: SingleChildScrollView(
+                                    child: BlockPicker(
+                                      pickerColor: pickerColor,
+                                      onColorChanged: (Color color) {
+                                        setState(() {
+                                          pickerColor = color;
+                                        });
+                                      },
+                                      availableColors: const [
+                                        AppColors.tertiaryColor,
+                                        Colors.red,
+                                        Colors.pink,
+                                        Colors.purple,
+                                        Colors.deepPurple,
+                                        Colors.indigo,
+                                        Colors.blue,
+                                        Colors.lightBlue,
+                                        Colors.cyan,
+                                        Colors.teal,
+                                        Colors.green,
+                                        Colors.lightGreen,
+                                        Colors.lime,
+                                        Colors.yellow,
+                                        Colors.amber,
+                                        Colors.orange,
+                                        Colors.deepOrange,
+                                        Colors.brown,
+                                        Colors.grey,
+                                        Colors.black,
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    child: const Text('Save'),
-                                    onPressed: () {
-                                      setState(() {
-                                        noteColor = pickerColor;
-                                        hasChanged = true;
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          color: pickerColor,
-                          child: Icon(Icons.color_lens_outlined),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: const Text('Save'),
+                                      onPressed: () {
+                                        setState(() {
+                                          noteColor = pickerColor;
+                                          hasChanged = true;
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            color: pickerColor,
+                            child: Icon(Icons.color_lens_outlined),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: quill.QuillEditor(
+                          controller: _controller,
+                          autoFocus: false,
+                          expands: false,
+                          focusNode: focusNode,
+                          scrollController: scrollController,
+                          padding: EdgeInsets.zero,
+                          scrollable: true,
+                          readOnly: false,
+                          onTapDown: (tap, offset) {
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
+                            return false;
+                          },
                         ),
                       ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: quill.QuillEditor.basic(
+                    ),
+                    Container(
+                      child: quill.QuillToolbar.basic(
                         controller: _controller,
-                        readOnly: false,
-                        // true for view only mode
                       ),
                     ),
-                  ),
-                  Container(
-                    child: quill.QuillToolbar.basic(
-                      controller: _controller,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      var json = jsonEncode(_controller.document.toDelta().toJson());
-                      print(json);
-                    },
-                    child: const Text("print"),
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );
@@ -203,6 +225,8 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   void dispose() {
     _controller.dispose();
     timer?.cancel();
+    focusNode.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 }
