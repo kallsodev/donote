@@ -1,3 +1,4 @@
+import 'package:donote/blocs/local_notes_sync/local_notes_sync_cubit.dart';
 import 'package:donote/blocs/notes/notes_bloc.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/pages/home/home_view.dart';
@@ -90,11 +91,19 @@ class HomePage extends StatelessWidget {
               ),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => NotesBloc(getIt<NotesRepository>())..add(const LoadNotes()),
-        child: const SafeArea(
-          child: HomeView(),
-        ),
+      body: BlocBuilder<LocalNotesSyncCubit, LocalNotesSyncState>(
+        builder: (context, state) {
+          if (state.status == LocalNotesSyncStatus.upToDate) {
+            return BlocProvider(
+              create: (context) => NotesBloc(getIt<NotesRepository>())..add(const LoadNotes()),
+              child: const SafeArea(
+                child: HomeView(),
+              ),
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

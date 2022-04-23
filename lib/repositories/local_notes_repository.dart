@@ -12,15 +12,19 @@ class LocalNotesRepository {
     _notes = await Hive.openBox<LocalNoteModel>('notes');
   }
 
+  List<LocalNoteModel> getNotes() {
+    return _notes.values.toList();
+  }
+
   void putNote({required id, required LocalNoteModel note}) {
     _notes.put(id, note);
   }
 
-  void deleteNote({required id}){
+  void deleteNote({required id}) {
     _notes.delete(id);
   }
 
-  LocalNoteModel getNote({required id}){
+  LocalNoteModel getNote({required id}) {
     return _notes.get(id)!;
   }
 }
