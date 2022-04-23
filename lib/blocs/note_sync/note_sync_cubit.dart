@@ -53,13 +53,12 @@ class NoteSyncCubit extends Cubit<NoteSyncState> {
 
   Future<void> forceSync({required LocalNoteModel localNoteModel}) async {
     try {
+      _timer?.cancel();
       await notesRepository.updateNote(localNoteModel: localNoteModel);
       localNotesRepository.deleteNote(id: localNoteModel.docId);
-      Set<String> set = state.toSyncDocuments;
-      set.remove(localNoteModel.docId);
       emit(state.copyWith(
-        status: state.status,
-        toSyncDocuments: set,
+        status: NoteSyncStatus.upToDate,
+        toSyncDocuments: {},
       ));
     } on FirebaseException catch (e) {
       print(e);

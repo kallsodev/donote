@@ -16,15 +16,19 @@ class LocalNotesRepository {
     return _notes.values.toList();
   }
 
-  void putNote({required id, required LocalNoteModel note}) {
+  void putNote({required String id, required LocalNoteModel note}) {
     _notes.put(id, note);
   }
 
-  void deleteNote({required id}) {
+  void deleteNote({required String id}) {
     _notes.delete(id);
   }
 
-  LocalNoteModel getNote({required id}) {
+  void deleteAllNotes() {
+    _notes.clear();
+  }
+
+  LocalNoteModel getNote({required String id}) {
     return _notes.get(id)!;
   }
 }

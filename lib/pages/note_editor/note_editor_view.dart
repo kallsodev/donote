@@ -54,22 +54,25 @@ class _NoteEditorViewState extends State<NoteEditorView> {
     context.read<CreateNoteCubit>().startSync();
   }
 
+  generateLocalNoteModel(String documentId) {
+    return LocalNoteModel(
+        lastModifiedAt: DateTime.now(),
+        title: _titleController.text,
+        data: jsonEncode(
+          _controller.document.toDelta().toJson(),
+        ),
+        stringData: _controller.document.toPlainText(),
+        hidden: false,
+        color: noteColor?.value,
+        docId: documentId);
+  }
+
   void updateNote(DocumentReference doc) {
     if (!hasChanged) {
       return;
     }
     if (mounted) {
-      context.read<NoteSyncCubit>().onChanged(
-          localNoteModel: LocalNoteModel(
-              lastModifiedAt: DateTime.now(),
-              title: _titleController.text,
-              data: jsonEncode(
-                _controller.document.toDelta().toJson(),
-              ),
-              stringData: _controller.document.toPlainText(),
-              hidden: false,
-              color: noteColor?.value,
-              docId: doc.id));
+      context.read<NoteSyncCubit>().onChanged(localNoteModel: generateLocalNoteModel(doc.id));
       setState(() {
         hasChanged = false;
       });
@@ -87,24 +90,19 @@ class _NoteEditorViewState extends State<NoteEditorView> {
         }
       },
       builder: (context, currentNote) {
-        return WillPopScope(
-          onWillPop: () async {
-            context.read<NoteSyncCubit>().forceSync(
-                localNoteModel: LocalNoteModel(
-                    lastModifiedAt: DateTime.now(),
-                    title: _titleController.text,
-                    data: jsonEncode(
-                      _controller.document.toDelta().toJson(),
-                    ),
-                    stringData: _controller.document.toPlainText(),
-                    hidden: false,
-                    color: noteColor?.value,
-                    docId: currentNote.note!.documentReference.id));
-            return true;
-          },
-          child: BlocBuilder<NoteSyncCubit, NoteSyncState>(
-            builder: (context, syncState) {
-              return SafeArea(
+        return BlocBuilder<NoteSyncCubit, NoteSyncState>(
+          builder: (context, syncState) {
+            return WillPopScope(
+              onWillPop: () async {
+                if (hasChanged || syncState.status == NoteSyncStatus.unsyncedChanges) {
+                  context.read<NoteSyncCubit>().forceSync(
+                        localNoteModel:
+                            generateLocalNoteModel(currentNote.note!.documentReference.id),
+                      );
+                }
+                return true;
+              },
+              child: SafeArea(
                 child: Column(
                   children: [
                     Row(
@@ -213,9 +211,9 @@ class _NoteEditorViewState extends State<NoteEditorView> {
                     ),
                   ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -227,6 +225,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
     timer?.cancel();
     focusNode.dispose();
     scrollController.dispose();
+    _titleController.dispose();
     super.dispose();
   }
 }

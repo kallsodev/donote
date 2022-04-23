@@ -21,21 +21,17 @@ class LocalNotesSyncCubit extends Cubit<LocalNotesSyncState> {
 
   Future<void> syncLocalData() async {
     if (localNotesRepository.getNotes().isNotEmpty) {
-      print(
-          "${localNotesRepository.getNotes().length.toString()} notes in the local db, sync incoming");
       for (var noteId in localNotesRepository.getNotes()) {
-        LocalNoteModel localNoteModel = localNotesRepository.getNote(id: noteId);
         try {
-          print("${localNoteModel.docId} is being sent");
-          await notesRepository.updateNote(localNoteModel: localNoteModel);
-          localNotesRepository.deleteNote(id: noteId);
-          print("${localNoteModel.docId} done");
+          await notesRepository.updateNote(localNoteModel: noteId);
         } on FirebaseException catch (e) {
           print(e);
         } catch (e) {
           print(e);
         }
       }
+      localNotesRepository.deleteAllNotes();
+
     }
     emit(state.copyWith(
       status: LocalNotesSyncStatus.upToDate,
