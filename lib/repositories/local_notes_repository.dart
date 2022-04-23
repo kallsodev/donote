@@ -25,6 +25,6 @@ class LocalNotesRepository {
   }
 
   LocalNoteModel getNote({required id}) {
-    return _notes.values.where((element) => element.docId == id).first;
+    return _notes.get(id)!;
   }
 }

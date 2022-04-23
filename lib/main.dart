@@ -48,7 +48,7 @@ class InitLayer extends StatelessWidget {
             ),
             unauthenticated: const LoginPage(),
             authenticated: BlocProvider(
-              create: (context) => getIt<LocalNotesSyncCubit>(),
+              create: (context) => getIt<LocalNotesSyncCubit>()..syncLocalData(),
               child: const HomePage(),
             ),
           ),

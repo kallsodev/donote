@@ -100,11 +100,9 @@ class HomePage extends StatelessWidget {
                 child: HomeView(),
               ),
             );
-          }
-          if (state.status == LocalNotesSyncStatus.unsyncedChanges) {
+          } else {
             return const CircularProgressIndicator();
           }
-          return const CircularProgressIndicator();
         },
       ),
     );
