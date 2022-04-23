@@ -16,23 +16,22 @@ class CreateNoteCubit extends Cubit<CreateNoteState> {
 
   final NotesRepository _notesRepository;
 
-  Future<void> createNew() async {
-    try {
-      DocumentReference doc =
-          await _notesRepository.createNote(createNoteModel: CreateNoteModel.emptyNote());
-      emit(state.copyWith(status: CreateNoteStatus.success, documentReference: doc));
-    } on FirebaseException catch (e) {
-      print(e);
-    } catch (e) {
-      print(e);
-      emit(state.copyWith(status: CreateNoteStatus.failed, errorMessage: e.toString()));
-    }
-  }
-
-  void setNote(NoteModel? noteModel) {
+  Future<void> setNote(NoteModel? noteModel) async {
     if (noteModel != null) {
       emit(state.copyWith(
-          status: CreateNoteStatus.success, documentReference: noteModel.documentReference));
+          status: CreateNoteStatus.success, note: noteModel));
+    } else {
+      try {
+        CreateNoteModel createNoteModel = CreateNoteModel.emptyNote();
+        DocumentReference doc =
+            await _notesRepository.createNote(createNoteModel: createNoteModel);
+        emit(state.copyWith(status: CreateNoteStatus.success, note: createNoteModel.toNoteModel(doc)));
+      } on FirebaseException catch (e) {
+        print(e);
+      } catch (e) {
+        print(e);
+        emit(state.copyWith(status: CreateNoteStatus.failed, errorMessage: e.toString()));
+      }
     }
   }
 }

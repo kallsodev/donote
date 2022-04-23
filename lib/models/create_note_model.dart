@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donote/models/note_model.dart';
 import 'package:equatable/equatable.dart';
 
 class CreateNoteModel extends Equatable {
@@ -34,5 +35,9 @@ class CreateNoteModel extends Equatable {
 
   static emptyNote() {
     return const CreateNoteModel(title: "New note", data: "", stringData: "", hidden: false);
+  }
+
+  NoteModel toNoteModel(DocumentReference documentReference) {
+    return NoteModel(title: title, data: data, stringData: stringData, hidden: hidden, createdAt: DateTime.now(), lastModifiedAt: DateTime.now(), documentReference: documentReference);
   }
 }

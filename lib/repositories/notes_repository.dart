@@ -24,11 +24,13 @@ class NotesRepository implements INotesRepository {
 
   @override
   Future<void> updateNote({required LocalNoteModel localNoteModel}) async {
-    await localNoteModel.documentReference.update(localNoteModel.toUpdateJson());
+    await FirebaseFirestore.instance.collection('users').doc(EasyAuth.currentUserId).collection(
+        'notes').doc(localNoteModel.docId).update(localNoteModel.toUpdateJson());
   }
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotes() {
-    return FirebaseFirestore.instance.collection('users').doc(EasyAuth.currentUserId).collection('notes').orderBy('lastModifiedAt', descending: true).snapshots();
+    return FirebaseFirestore.instance.collection('users').doc(EasyAuth.currentUserId).collection(
+        'notes').orderBy('lastModifiedAt', descending: true).snapshots();
   }
 }

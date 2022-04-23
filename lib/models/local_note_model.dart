@@ -21,7 +21,7 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
   @HiveField(5)
   final bool hidden;
   @HiveField(6)
-  final DocumentReference documentReference;
+  final String docId;
 
   LocalNoteModel({
     required this.lastModifiedAt,
@@ -29,7 +29,7 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
     required this.data,
     required this.stringData,
     required this.hidden,
-    required this.documentReference,
+    required this.docId,
     this.color,
   });
 
@@ -54,5 +54,5 @@ class LocalNoteModel extends HiveObject with EquatableMixin {
 
   @override
   List<Object> get props =>
-      [title, data, color ?? "", stringData, hidden, lastModifiedAt, documentReference.id];
+      [title, data, color ?? "", stringData, hidden, lastModifiedAt, docId];
 }

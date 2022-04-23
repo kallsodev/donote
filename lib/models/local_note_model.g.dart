@@ -22,7 +22,7 @@ class LocalNoteModelAdapter extends TypeAdapter<LocalNoteModel> {
       data: fields[2] as String,
       stringData: fields[4] as String,
       hidden: fields[5] as bool,
-      documentReference: fields[6] as DocumentReference<Object>,
+      docId: fields[6] as String,
       color: fields[3] as Color?,
     );
   }
@@ -44,7 +44,7 @@ class LocalNoteModelAdapter extends TypeAdapter<LocalNoteModel> {
       ..writeByte(5)
       ..write(obj.hidden)
       ..writeByte(6)
-      ..write(obj.documentReference);
+      ..write(obj.docId);
   }
 
   @override

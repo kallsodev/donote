@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,6 +27,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   bool hasChanged = false;
   Color? noteColor;
   Color pickerColor = AppColors.tertiaryColor;
+  Timer? timer;
 
   @override
   void initState() {
@@ -47,14 +49,42 @@ class _NoteEditorViewState extends State<NoteEditorView> {
       hasChanged = true;
     });
     super.initState();
-    updateNote();
   }
 
-  void updateNote() {}
+  void updateNote(Timer timer, DocumentReference doc) {
+    print("update");
+    if (!hasChanged) {
+      return;
+    }
+    if (mounted) {
+      context.read<NoteSyncCubit>().onChanged(
+          localNoteModel: LocalNoteModel(
+              lastModifiedAt: DateTime.now(),
+              title: _titleController.text,
+              data: jsonEncode(
+                _controller.document.toDelta().toJson(),
+              ),
+              stringData: _controller.document.toPlainText(),
+              hidden: false,
+              docId: doc.id));
+      setState(() {
+        hasChanged = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateNoteCubit, CreateNoteState>(
+    return BlocConsumer<CreateNoteCubit, CreateNoteState>(
+      listener: (context, currentNote) {
+        print(currentNote.status);
+        if (currentNote.status == CreateNoteStatus.success) {
+          print("status success");
+          timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+            updateNote(timer, currentNote.note!.documentReference);
+          });
+        }
+      },
       builder: (context, currentNote) {
         return BlocBuilder<NoteSyncCubit, NoteSyncState>(
           builder: (context, syncState) {
@@ -68,13 +98,9 @@ class _NoteEditorViewState extends State<NoteEditorView> {
                           child: TextField(
                             controller: _titleController,
                             onChanged: (title) {
-                              context.read<NoteSyncCubit>().onChanged(
-                                  localNoteModel: LocalNoteModel(lastModifiedAt: DateTime.now(),
-                                      title: title,
-                                      data: jsonEncode(_controller.document.toDelta().toJson(),),
-                                      stringData: _controller.document.toPlainText(),
-                                      hidden: false,
-                                      documentReference: currentNote.documentReference!));
+                              setState(() {
+                                hasChanged = true;
+                              });
                             },
                           ),
                         ),
@@ -176,6 +202,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   @override
   void dispose() {
     _controller.dispose();
+    timer?.cancel();
     super.dispose();
   }
 }

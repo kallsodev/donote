@@ -5,26 +5,26 @@ enum CreateNoteStatus { idle, loading, success, failed }
 class CreateNoteState extends Equatable {
   const CreateNoteState({
     this.errorMessage,
-    this.documentReference,
+    this.note,
     required this.status,
   });
 
   final String? errorMessage;
   final CreateNoteStatus status;
-  final DocumentReference? documentReference;
+  final NoteModel? note;
 
   @override
   List<Object> get props =>
-      [status, documentReference != null ? documentReference!.id : '', errorMessage ?? ""];
+      [status, note != null ? note!.documentReference.id : '', errorMessage ?? ""];
 
   CreateNoteState copyWith({
     required CreateNoteStatus status,
-    DocumentReference? documentReference,
+    NoteModel? note,
     String? errorMessage,
   }) {
     return CreateNoteState(
       errorMessage: errorMessage ?? this.errorMessage,
-      documentReference: documentReference ?? this.documentReference,
+      note: note ?? this.note,
       status: status,
     );
   }

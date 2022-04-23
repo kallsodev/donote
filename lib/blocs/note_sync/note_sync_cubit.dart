@@ -45,9 +45,9 @@ class NoteSyncCubit extends Cubit<NoteSyncState> {
   void onChanged({required LocalNoteModel localNoteModel}) {
     emit(state.copyWith(
         status: NoteSyncStatus.unsyncedChanges,
-        changedDocument: localNoteModel.documentReference.id));
+        changedDocument: localNoteModel.docId));
     _timer?.cancel();
     _timer = Timer(const Duration(seconds: 5), _onSync);
-    localNotesRepository.putNote(id: localNoteModel.documentReference.id, note: localNoteModel);
+    localNotesRepository.putNote(id: localNoteModel.docId, note: localNoteModel);
   }
 }
