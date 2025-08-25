@@ -16,25 +16,31 @@ part 'notes_state.dart';
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final NotesRepository notesRepository;
 
-  NotesBloc(this.notesRepository) : super(const NotesState.loading()) {
+  NotesBloc(this.notesRepository) : super(const NotesState(status: NotesStatus.loading)) {
     on<LoadNotes>(_onLoadNotes);
+    on<ChangeLockedVisibility>(_onChangeLockedVisibility);
+  }
+
+  Future<void> _onChangeLockedVisibility(ChangeLockedVisibility event, Emitter<NotesState> emit) async {
+    emit(state.copyWith(shouldShowLockedNotes: !state.shouldShowLockedNotes));
   }
 
   Future<void> _onLoadNotes(LoadNotes event, Emitter<NotesState> emit) async {
     await emit.forEach<QuerySnapshot<Map<String, dynamic>>>(
       notesRepository.getNotes(),
       onData: (query) =>
-          NotesState.loaded(
+          state.copyWith(notes:
               query.docs.map((event) {
                 NoteModel p = NoteModel.fromDocumentSnapshot(event);
                 return p;
               }).toList(),
+            status: NotesStatus.loaded,
           ),
       onError: (e, __) {
         if(kDebugMode) {
           print(e);
         }
-        return const NotesState.failed();
+        return state.copyWith(status: NotesStatus.failed);
       },
     );
   }

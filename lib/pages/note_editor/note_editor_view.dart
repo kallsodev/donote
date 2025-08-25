@@ -25,6 +25,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   late quill.QuillController _controller;
   late TextEditingController _titleController;
   bool hasChanged = false;
+  bool locked = false;
   Color? noteColor;
   Color pickerColor = AppColors.tertiaryColor;
   Timer? timer;
@@ -34,8 +35,15 @@ class _NoteEditorViewState extends State<NoteEditorView> {
   @override
   void initState() {
     if (widget.note != null) {
-      var data = jsonDecode(widget.note!.data);
+      var data;
+      if(widget.note!.data.isNotEmpty) {
+        print(widget.note!.data);
+        data = jsonDecode(widget.note!.data);
+      } else {
+        data = {};
+      }
       noteColor = widget.note!.color;
+      locked = widget.note!.hidden;
       if (noteColor != null) {
         pickerColor = noteColor!;
       }
@@ -62,7 +70,7 @@ class _NoteEditorViewState extends State<NoteEditorView> {
           _controller.document.toDelta().toJson(),
         ),
         stringData: _controller.document.toPlainText(),
-        hidden: false,
+        hidden: locked,
         color: noteColor?.value,
         docId: documentId);
   }
@@ -108,15 +116,26 @@ class _NoteEditorViewState extends State<NoteEditorView> {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            child: TextField(
-                              controller: _titleController,
-                              onChanged: (title) {
-                                setState(() {
-                                  hasChanged = true;
-                                });
-                              },
-                            ),
+                          child: TextField(
+                            controller: _titleController,
+                            onChanged: (title) {
+                              setState(() {
+                                hasChanged = true;
+                              });
+                            },
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              hasChanged = true;
+                              locked = !locked;
+                            });
+                          },
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: Icon(locked ? Icons.lock_open_outlined : Icons.lock_outlined),
                           ),
                         ),
                         GestureDetector(

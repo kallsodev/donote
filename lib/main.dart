@@ -1,5 +1,6 @@
-import 'package:donote/blocs/local_notes_sync/local_notes_sync_cubit.dart';
+import 'package:donote/blocs/biometrics/biometrics_cubit.dart';
 import 'package:donote/blocs/note_sync/note_sync_cubit.dart';
+import 'package:donote/firebase_options.dart';
 import 'package:donote/injection.dart';
 import 'package:donote/pages/auth/login/login_page.dart';
 import 'package:donote/pages/home/home_page.dart';
@@ -18,7 +19,7 @@ Future<void> main() async {
       configureDependencies();
       await Hive.initFlutter();
       await getIt<LocalNotesRepository>().init();
-      await EasyAuth.initializeFirebase();
+      await EasyAuth.initializeFirebase(name: 'alex', options: DefaultFirebaseOptions.currentPlatform,);
     },
     appThemes: const CustomTheme(),
     child: const InitLayer(),
@@ -37,20 +38,21 @@ class InitLayer extends StatelessWidget {
             create: (_) => getIt<NoteSyncCubit>(),
             lazy: false,
           ),
+          BlocProvider(
+            create: (_) => getIt<BiometricsCubit>(),
+            lazy: false,
+          ),
         ],
-        child: EasyMaterialApp(
+        child: const EasyMaterialApp(
           debugShowCheckedModeBanner: false,
           home: EasyAuthLayer(
-            unknown: const Scaffold(
+            unknown: Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             ),
-            unauthenticated: const LoginPage(),
-            authenticated: BlocProvider(
-              create: (context) => getIt<LocalNotesSyncCubit>()..syncLocalData(),
-              child: const HomePage(),
-            ),
+            unauthenticated: LoginPage(),
+            authenticated: HomePage(),
           ),
         ),
       ),

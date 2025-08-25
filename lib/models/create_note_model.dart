@@ -18,26 +18,33 @@ class CreateNoteModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [title,data, stringData, hidden];
-
+  List<Object?> get props => [title, data, stringData, hidden];
 
   Map<String, dynamic> toCreateJson() {
     DateTime date = DateTime.now();
     return {
-    'title': title,
-    'data': data,
-    'stringData': stringData,
-    'createdAt': Timestamp.fromDate(date),
-    'lastModifiedAt': Timestamp.fromDate(date),
-    'hidden': hidden,
-  };
+      'title': title,
+      'data': data,
+      'stringData': stringData,
+      'createdAt': Timestamp.fromDate(date),
+      'lastModifiedAt': Timestamp.fromDate(date),
+      'hidden': hidden,
+    };
   }
 
   static emptyNote() {
-    return const CreateNoteModel(title: "New note", data: "", stringData: "", hidden: false);
+    return const CreateNoteModel(
+        title: "New note", data: '[{"insert":"\\n"}]', stringData: "", hidden: false);
   }
 
   NoteModel toNoteModel(DocumentReference documentReference) {
-    return NoteModel(title: title, data: data, stringData: stringData, hidden: hidden, createdAt: DateTime.now(), lastModifiedAt: DateTime.now(), documentReference: documentReference);
+    return NoteModel(
+        title: title,
+        data: data,
+        stringData: stringData,
+        hidden: hidden,
+        createdAt: DateTime.now(),
+        lastModifiedAt: DateTime.now(),
+        documentReference: documentReference);
   }
 }

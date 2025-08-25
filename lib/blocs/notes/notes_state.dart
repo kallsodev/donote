@@ -2,30 +2,37 @@ part of 'notes_bloc.dart';
 
 enum NotesStatus { loading, loaded, failed }
 
-class NotesState extends Equatable {
-  const NotesState._({
-    required this.status,
-    this.error = "",
-    this.notes = const []
-  });
 
-  const NotesState.loaded(List<NoteModel> notes)
-      : this._(status: NotesStatus.loaded, notes: notes);
-
-  const NotesState.loading() : this._(status: NotesStatus.loading);
-
-  const NotesState.failed()
-      : this._(status: NotesStatus.failed, error: "Failed to load notes");
-
+class NotesState {
   final NotesStatus status;
   final List<NoteModel> notes;
   final String error;
+  final bool shouldShowLockedNotes;
 
-  @override
-  List<Object> get props => [status, notes];
+  const NotesState({
+    this.status = NotesStatus.loading,
+    this.error = "",
+    this.notes = const [],
+    this.shouldShowLockedNotes = true,
+  });
+
+  NotesState copyWith({
+   NotesStatus? status,
+    List<NoteModel>? notes,
+    String? error,
+    bool? shouldShowLockedNotes,
+  }) =>
+      NotesState(
+        status: status ?? this.status,
+        notes: notes ?? this.notes,
+        error: error ?? this.error,
+        shouldShowLockedNotes: shouldShowLockedNotes ?? this.shouldShowLockedNotes,
+      );
+
 
   @override
   String toString() {
-    return "NotesState $status";
+    return "NotesState - ${notes.length}";
   }
 }
+
